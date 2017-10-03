@@ -248,10 +248,11 @@ done < "$LABCONF_FILE"
 [ $VERBOSE -eq 0 ] && echo "Linpando arquivos ospfd.conf"
 
 # Acrescenta /etc/init.d/zebra start no fim de todos os arquivos .startup
-find $EMU_PATH -name *.startup | \
-while IFS= read -r startup_file; do
-	echo "/etc/init.d/zebra start" >> $startup_file
-done
+while IFS='' read -r startupfile; do
+    [ $VERBOSE -eq 0 ] && echo "Incluindo /etc/init.d/zebra start ao arquivo ${startupfile}"
+    printf "\n" >> $startupfile
+	echo "/etc/init.d/zebra start" >> $startupfile
+done < <(find "${EMU_PATH}/" -name '*.startup')
 
 echo "Estrutura criada com sucesso!"
 exit 0
